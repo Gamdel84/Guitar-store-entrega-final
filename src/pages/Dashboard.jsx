@@ -56,8 +56,7 @@ export default function Dashboard() {
               <th className="fw-bold text-primary fs-5">Modelo</th>
               <th className="fw-bold text-primary fs-5">Precio (u$s)</th>
               <th className="fw-bold text-primary fs-5">Stock</th>
-              <th className="fw-bold text-primary fs-5">Editar</th>
-              <th className="fw-bold text-primary fs-5">Eliminar</th>
+              <td className="fw-bold text-primary fs-5">Acciones</td>              
             </tr>
           </thead>
 
@@ -91,10 +90,9 @@ export default function Dashboard() {
                       state={{ producto: p, fromDashboard: true }}
                       className="btn btn-outline-success me-2 my-2"
                     >
-                      Editar entrada
+                      Editar
                     </Link>
-                  </td>
-                  <td>
+                  
                     <Link
                       to={`/eliminar-producto/${p.id}`}
                       state={{ producto: p }}
