@@ -8,8 +8,7 @@ export function ProductsProvider({ children }) {
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
-
-  // Cargar productos desde la API al iniciar
+  
   useEffect(() => {
     const cargar = async () => {
       setCargando(true);
@@ -31,8 +30,7 @@ export function ProductsProvider({ children }) {
 
     cargar();
   }, []);
-
-  // Validación simple
+ 
  const validar = (producto) => {
   const errores = {};
 
@@ -76,7 +74,7 @@ export function ProductsProvider({ children }) {
         ),
         tipo: producto.tipo || "",
         avatar: producto.avatar || "",
-        stock: Number(producto.stock ?? 0),   // 👉 NUEVO
+        stock: Number(producto.stock ?? 0),  
       }),
     });
 
@@ -104,7 +102,7 @@ export function ProductsProvider({ children }) {
           ? (cambios.precio ?? actual.precio).replace(",", ".")
           : cambios.precio ?? actual.precio
       ),
-      stock: Number(cambios.stock ?? actual.stock ?? 0),   // 👉 NUEVO
+      stock: Number(cambios.stock ?? actual.stock ?? 0),  
     };
 
 

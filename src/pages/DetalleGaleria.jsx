@@ -7,11 +7,9 @@ export default function DetalleGaleria() {
   const location = useLocation();
   const { productos, cargando } = useProducts();
   const { agregarAlCarrito } = useCartContext();
-
-  // 1) Si llegamos desde la Galeria, viene por state
+  
   let guitarra = location.state?.g;
-
-  // 2) Si recargamos o entramos directo por URL, la buscamos en el context
+  
   if (!guitarra && !cargando) {
     guitarra = productos.find((p) => String(p.id) === String(id));
   }

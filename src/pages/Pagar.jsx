@@ -11,7 +11,7 @@ export default function Pagar() {
   const { editarProducto } = useProducts();
   const navigate = useNavigate();
 
-  const [procesando, setProcesando] = useState(false); // 👈 nuevo estado
+  const [procesando, setProcesando] = useState(false); 
 
   useEffect(() => {
     if (!usuario) {
@@ -26,16 +26,14 @@ export default function Pagar() {
     }
 
     if (!carrito.length) {
-      // si querés, esto después también lo cambiamos
       alert("No hay productos en el carrito.");
       navigate("/galeria");
       return;
     }
 
     try {
-      setProcesando(true); // 👈 empezamos “cargando”
+      setProcesando(true); 
 
-      // Descontar stock en la API por cada producto del carrito
       for (const item of carrito) {
         const stockActual =
           item.stock !== undefined && item.stock !== null
@@ -43,7 +41,7 @@ export default function Pagar() {
             : null;
 
         if (stockActual === null || Number.isNaN(stockActual)) {
-          continue; // este producto no maneja stock aún
+          continue; 
         }
 
         const cantidadComprada = item.cantidad ?? 1;
@@ -54,7 +52,6 @@ export default function Pagar() {
 
       vaciarCarrito();
 
-      // 👇 En vez de alert + navigate, mandamos info a /galeria
       navigate("/galeria", { state: { compraOk: true } });
     } catch (e) {
       console.error(e);

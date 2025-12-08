@@ -1,4 +1,3 @@
-// src/components/FormularioCarga.jsx
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useProducts } from "../context/ProductsContext";
@@ -18,7 +17,7 @@ export default function FormularioCarga() {
         precio: "",
         tipo: "",
         avatar: "",
-        stock: "",     // 👉 NUEVO
+        stock: "",     
       }
     );
 

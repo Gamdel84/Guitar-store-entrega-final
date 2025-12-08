@@ -89,16 +89,13 @@ export function CartProvider({ children }) {
     [carrito]
   );
 
-  const dispararAnimacionCarrito = () => {
-    // opcionalmente “reseteás” antes, por si querés asegurar el reinicio
+  const dispararAnimacionCarrito = () => {   
     setAnimarCarrito(false);
-    // forzar reflow si alguna vez ves que no se dispara bien:
-    // void document.body.offsetWidth;
     setAnimarCarrito(true);
 
     setTimeout(() => {
       setAnimarCarrito(false);
-    }, 500); // duración parecida a la animación CSS
+    }, 500); 
   };
 
   const value = useMemo(

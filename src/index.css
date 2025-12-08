@@ -38,28 +38,28 @@ body {
     color: var(--tertiary-color);
 }
 
-/* Estado base: todas las li/links del navbar */
+
 .navbar .nav-link {
-  color: var(--tertiary-color);              /* (a) */
+  color: var(--tertiary-color);              
   border-radius: 10px;
   font-weight: 700;
 }
 
-/* Hover normal: cambia el fondo, pero el texto sigue en (a) */
+
 .navbar .nav-link:hover,
 .navbar .nav-link:focus {
   background-color: var(--secondary-color);
   color: var(--title-3-color);
 }
 
-/* Link activo (ruta seleccionada): texto (b) */
+
 .navbar .nav-link.active {
   color: var(--text-selection-color); 
   font-weight: bold;
   background-color: var(--accent-color);
 }
 
-/* Link activo + hover: fondo + texto (b) */
+
 .navbar .nav-link.active:hover,
 .navbar .nav-link.active:focus {
   background-color: var(--accent-color);

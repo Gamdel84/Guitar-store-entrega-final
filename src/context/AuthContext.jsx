@@ -1,4 +1,3 @@
-// src/context/AuthContext.jsx
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 export const AuthContext = createContext(null);
@@ -7,7 +6,7 @@ export function AuthProvider({ children }) {
   const [usuario, setUsuario] = useState(null);
   const [cargando, setCargando] = useState(true);
 
-  // Al iniciar la app, reconstruir usuario desde localStorage
+  
   useEffect(() => {
     try {
       const token = localStorage.getItem("authToken");
@@ -27,7 +26,7 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  // Inicia sesión recibiendo { nombre, email, rol }
+  
   const iniciarSesion = ({ nombre, email, rol = "user" }) => {
     const token = `fake-token-${nombre || "user"}`;
 

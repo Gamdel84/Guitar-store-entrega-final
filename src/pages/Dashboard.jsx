@@ -65,16 +65,16 @@ export default function Dashboard() {
             {productos.map((p) => {
               const stock = Number(p.stock ?? 0);
 
-              // 👉 Lógica de bajo stock
+              
               let filaClass = "";
               let stockClass = "";
 
               if (stock === 0) {
-                filaClass = "table-danger";              // fondo rojo
-                stockClass = "text-danger fw-bold";      // texto rojo y fuerte
+                filaClass = "table-danger";              
+                stockClass = "text-danger fw-bold";      
               } else if (stock <= 2) {
-                filaClass = "table-warning";             // fondo amarillo
-                stockClass = "text-danger fw-semibold";  // texto rojo
+                filaClass = "table-warning";             
+                stockClass = "text-danger fw-semibold";  
               }
 
               return (

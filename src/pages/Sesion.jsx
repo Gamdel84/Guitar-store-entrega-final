@@ -16,7 +16,7 @@ export default function IniciarSesion() {
     const { nombre, email, pass } = form;
 
     let rol = "user";
-    // admin hardcodeado: email + password específicos
+
     if (email === "admin@admin" && pass === "admin") {
       rol = "admin";
     }

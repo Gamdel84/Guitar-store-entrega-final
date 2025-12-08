@@ -1,4 +1,3 @@
-// src/components/EliminarProducto.jsx
 import { useLocation, useNavigate } from "react-router-dom";
 import { useProducts } from "../context/ProductsContext";
 

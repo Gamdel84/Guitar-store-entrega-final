@@ -10,19 +10,16 @@ export default function Galeria() {
   const { agregarAlCarrito } = useCartContext();
   const { isAdmin } = useAuthContext();
   const navigate = useNavigate();
-  const location = useLocation();              // 🆕 usamos location
+  const location = useLocation();              
 
   const [busqueda, setBusqueda] = useState("");
   const [paginaActual, setPaginaActual] = useState(1);
   const guitarrasPorPagina = 6;
-
-  // 🆕 mensaje de compra realizada
+  
   const [mensajeCompra, setMensajeCompra] = useState("");
-
-  // 🆕 estado para animar el carrito al agregar
+  
   const [resaltarCarrito, setResaltarCarrito] = useState(false);
-
-  // SEO / meta tags (opcional, pero similar al profe)
+  
   useEffect(() => {
     document.title = "Guitar Store | Galería de guitarras";
 
@@ -46,8 +43,7 @@ export default function Galeria() {
     );
     updateMetaTag("author", "Guitar Store");
     updateMetaTag("robots", "index, follow");
-
-    // Open Graph
+    
     updateMetaTag(
       "og:title",
       "Guitar Store | Galería de guitarras",
@@ -61,13 +57,11 @@ export default function Galeria() {
     updateMetaTag("og:type", "website", "property");
     updateMetaTag("og:url", window.location.href, "property");
   }, []);
-
-  // 🆕 detectar si venimos de una compra exitosa
+  
   useEffect(() => {
     if (location.state?.compraOk) {
       setMensajeCompra("¡Tu compra se realizó con éxito! 🎸");
-
-      // limpiar el state para que no reaparezca al recargar
+      
       window.history.replaceState({}, document.title, window.location.pathname);
 
       const timer = setTimeout(() => {
@@ -77,8 +71,7 @@ export default function Galeria() {
       return () => clearTimeout(timer);
     }
   }, [location.state]);
-
-  // Manejo de estados básicos
+  
   if (cargando) {
     return <p>Cargando guitarras...</p>;
   }
@@ -97,8 +90,7 @@ export default function Galeria() {
       </>
     );
   }
-
-  // Filtro por búsqueda (marca / modelo / tipo)
+  
   const busquedaLower = busqueda.toLowerCase();
   const guitarrasFiltradas = productos.filter((g) => {
     return (
@@ -108,7 +100,6 @@ export default function Galeria() {
     );
   });
 
-  // Paginación
   const indiceUltima = paginaActual * guitarrasPorPagina;
   const indicePrimera = indiceUltima - guitarrasPorPagina;
   const guitarrasActuales = guitarrasFiltradas.slice(
@@ -126,8 +117,7 @@ export default function Galeria() {
     setBusqueda(e.target.value);
     setPaginaActual(1);
   };
-
-  // Navegación para admin
+  
   const manejarEliminar = (guitarra) => {
     navigate(`/eliminar-producto/${guitarra.id}`, {
       state: { producto: guitarra },
@@ -140,28 +130,23 @@ export default function Galeria() {
     });
   };
 
-  // 🆕 manejar agregar al carrito con animación y scroll
   const manejarAgregarAlCarrito = (guitarra) => {
   agregarAlCarrito(guitarra);
 
   const carritoElem = document.getElementById("carrito-flotante");
 
-  // ⚡ Reiniciar animación: sacar y volver a poner la clase
   setResaltarCarrito(false);
   if (carritoElem) {
-    // fuerza un reflow para que el navegador “resetee” la animación
     void carritoElem.offsetWidth;
   }
   setResaltarCarrito(true);
 
-  // Scroll suave hacia el carrito
   if (carritoElem) {
     const rect = carritoElem.getBoundingClientRect();
     const y = window.scrollY + rect.top - 100;
     window.scrollTo({ top: y, behavior: "smooth" });
   }
 
-  // Después de un ratito, sacamos la clase
   setTimeout(() => {
     setResaltarCarrito(false);
   }, 600);
@@ -170,7 +155,6 @@ export default function Galeria() {
 
   return (
     <>
-      {/* 🆕 aviso de compra exitosa */}
       {mensajeCompra && (
         <div
           className="alert alert-success text-center fw-semibold"
@@ -182,7 +166,6 @@ export default function Galeria() {
 
       <h2 className="text-center my-4 fs-4">♪♫ Galería ♫♪</h2>
       <div className="container mt-4 bg-main rounded-3 p-4 shadow-sm">
-        {/* Barra de búsqueda */}
         <div className="row mb-4">
           <div className="col-12 col-md-6">
             <label className="form-label fw-bold mb-2 ">
@@ -203,7 +186,6 @@ export default function Galeria() {
           </div>
         </div>
 
-        {/* Grid de productos */}
         <div className="row">
           {guitarrasActuales.map((g) => {
             const stock =
@@ -211,7 +193,7 @@ export default function Galeria() {
                 ? Number(g.stock)
                 : null;
 
-            const sinStock = stock !== null && stock <= 0; // 🆕 lógica de stock
+            const sinStock = stock !== null && stock <= 0; 
 
             return (
               <div key={g.id} className="col-12 col-md-6 col-lg-4 mb-4">
@@ -240,7 +222,6 @@ export default function Galeria() {
                       Precio: <strong>u$s {g.precio}</strong>
                     </p>
 
-                    {/* 🆕 mostrás stock si existe */}
                     {stock !== null && (
                       <p
                         className={`card-text ${
@@ -266,13 +247,12 @@ export default function Galeria() {
                         <button
                           onClick={() => manejarAgregarAlCarrito(g)}
                           className="btn btn-sm rounded-3 btn-primary"
-                          disabled={sinStock} // 🆕 deshabilitar si no hay stock
+                          disabled={sinStock} 
                         >
                           {sinStock ? "Sin stock" : "Agregar al carrito"}
                         </button>
                       </div>
 
-                      {/* Botones solo para admin */}
                       {isAdmin && (
                         <div className="mt-3 pt-3 border-top">
                           <div className="d-flex gap-2">
@@ -299,7 +279,6 @@ export default function Galeria() {
           })}
         </div>
 
-        {/* 🆕 carrito con posible animación */}
         <div
           id="carrito-flotante"
           className={`mt-4 ${

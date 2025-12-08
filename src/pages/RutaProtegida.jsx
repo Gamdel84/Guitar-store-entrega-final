@@ -1,4 +1,3 @@
-// src/components/RutaProtegida.jsx
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 
