@@ -10,16 +10,15 @@ export default function Galeria() {
   const { agregarAlCarrito } = useCartContext();
   const { isAdmin } = useAuthContext();
   const navigate = useNavigate();
-  const location = useLocation();              
+  const location = useLocation();
 
   const [busqueda, setBusqueda] = useState("");
   const [paginaActual, setPaginaActual] = useState(1);
   const guitarrasPorPagina = 6;
-  
+
   const [mensajeCompra, setMensajeCompra] = useState("");
-  
   const [resaltarCarrito, setResaltarCarrito] = useState(false);
-  
+
   useEffect(() => {
     document.title = "Guitar Store | Galería de guitarras";
 
@@ -43,7 +42,7 @@ export default function Galeria() {
     );
     updateMetaTag("author", "Guitar Store");
     updateMetaTag("robots", "index, follow");
-    
+
     updateMetaTag(
       "og:title",
       "Guitar Store | Galería de guitarras",
@@ -57,11 +56,11 @@ export default function Galeria() {
     updateMetaTag("og:type", "website", "property");
     updateMetaTag("og:url", window.location.href, "property");
   }, []);
-  
+
   useEffect(() => {
     if (location.state?.compraOk) {
       setMensajeCompra("¡Tu compra se realizó con éxito! 🎸");
-      
+
       window.history.replaceState({}, document.title, window.location.pathname);
 
       const timer = setTimeout(() => {
@@ -71,14 +70,9 @@ export default function Galeria() {
       return () => clearTimeout(timer);
     }
   }, [location.state]);
-  
-  if (cargando) {
-    return <p>Cargando guitarras...</p>;
-  }
 
-  if (error) {
-    return <p>Ocurrió un error al cargar las guitarras: {error}</p>;
-  }
+  if (cargando) return <p>Cargando guitarras...</p>;
+  if (error) return <p>Ocurrió un error al cargar las guitarras: {error}</p>;
 
   if (!productos || !productos.length) {
     return (
@@ -90,7 +84,8 @@ export default function Galeria() {
       </>
     );
   }
-  
+
+  // Filtro por búsqueda
   const busquedaLower = busqueda.toLowerCase();
   const guitarrasFiltradas = productos.filter((g) => {
     return (
@@ -100,6 +95,7 @@ export default function Galeria() {
     );
   });
 
+  // Paginación
   const indiceUltima = paginaActual * guitarrasPorPagina;
   const indicePrimera = indiceUltima - guitarrasPorPagina;
   const guitarrasActuales = guitarrasFiltradas.slice(
@@ -117,7 +113,7 @@ export default function Galeria() {
     setBusqueda(e.target.value);
     setPaginaActual(1);
   };
-  
+
   const manejarEliminar = (guitarra) => {
     navigate(`/eliminar-producto/${guitarra.id}`, {
       state: { producto: guitarra },
@@ -131,27 +127,26 @@ export default function Galeria() {
   };
 
   const manejarAgregarAlCarrito = (guitarra) => {
-  agregarAlCarrito(guitarra);
+    agregarAlCarrito(guitarra);
 
-  const carritoElem = document.getElementById("carrito-flotante");
+    const carritoElem = document.getElementById("carrito-flotante");
 
-  setResaltarCarrito(false);
-  if (carritoElem) {
-    void carritoElem.offsetWidth;
-  }
-  setResaltarCarrito(true);
-
-  if (carritoElem) {
-    const rect = carritoElem.getBoundingClientRect();
-    const y = window.scrollY + rect.top - 100;
-    window.scrollTo({ top: y, behavior: "smooth" });
-  }
-
-  setTimeout(() => {
     setResaltarCarrito(false);
-  }, 600);
-};
+    if (carritoElem) {
+      void carritoElem.offsetWidth;
+    }
+    setResaltarCarrito(true);
 
+    if (carritoElem) {
+      const rect = carritoElem.getBoundingClientRect();
+      const y = window.scrollY + rect.top - 100;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+
+    setTimeout(() => {
+      setResaltarCarrito(false);
+    }, 600);
+  };
 
   return (
     <>
@@ -166,6 +161,7 @@ export default function Galeria() {
 
       <h2 className="text-center my-4 fs-4">♪♫ Galería ♫♪</h2>
       <div className="container mt-4 bg-main rounded-3 p-4 shadow-sm">
+        {/* Buscador */}
         <div className="row mb-4">
           <div className="col-12 col-md-6">
             <label className="form-label fw-bold mb-2 ">
@@ -186,6 +182,7 @@ export default function Galeria() {
           </div>
         </div>
 
+        {/* Grid de cards */}
         <div className="row">
           {guitarrasActuales.map((g) => {
             const stock =
@@ -193,7 +190,7 @@ export default function Galeria() {
                 ? Number(g.stock)
                 : null;
 
-            const sinStock = stock !== null && stock <= 0; 
+            const sinStock = stock !== null && stock <= 0;
 
             return (
               <div key={g.id} className="col-12 col-md-6 col-lg-4 mb-4">
@@ -229,9 +226,7 @@ export default function Galeria() {
                         }`}
                       >
                         Stock:{" "}
-                        <strong>
-                          {sinStock ? "Sin stock" : stock}
-                        </strong>
+                        <strong>{sinStock ? "Sin stock" : stock}</strong>
                       </p>
                     )}
 
@@ -247,7 +242,7 @@ export default function Galeria() {
                         <button
                           onClick={() => manejarAgregarAlCarrito(g)}
                           className="btn btn-sm rounded-3 btn-primary"
-                          disabled={sinStock} 
+                          disabled={sinStock}
                         >
                           {sinStock ? "Sin stock" : "Agregar al carrito"}
                         </button>
@@ -279,6 +274,35 @@ export default function Galeria() {
           })}
         </div>
 
+        {/* ⬇ PAGINADOR: botones para cambiar de página */}
+        {guitarrasFiltradas.length > guitarrasPorPagina && (
+          <div className="d-flex justify-content-center my-4">
+            {Array.from({ length: totalPaginas }, (_, index) => (
+              <button
+                key={index + 1}
+                className={`btn mx-1 ${
+                  paginaActual === index + 1
+                    ? "btn-primary"
+                    : "btn-outline-primary"
+                }`}
+                onClick={() => cambiarPagina(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* ⬇ Info de página actual */}
+        {guitarrasFiltradas.length > 0 && (
+          <div className="text-center text-muted mt-2">
+            <small>
+              Mostrando {guitarrasActuales.length} guitarras (página{" "}
+              {paginaActual} de {totalPaginas || 1})
+            </small>
+          </div>
+        )}
+
         <div
           id="carrito-flotante"
           className={`mt-4 ${
@@ -297,4 +321,5 @@ export default function Galeria() {
     </>
   );
 }
+
 
